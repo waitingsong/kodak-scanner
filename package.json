@@ -1,24 +1,32 @@
 {
-  "name": "npm-base",
+  "name": "kodak-scanner",
   "author": "waiting",
   "version": "0.0.1",
-  "description": "npm boilerplate",
-  "keywords": [],
+  "description": "Kodak i3000 series scanner ECAMScript for mordern browser via client WebSocket Service",
+  "keywords": [
+    "Kodak",
+    "scanner",
+    "i3000",
+    "i3500",
+    "rxjs",
+    "¿Â´ï",
+    "¸ßÉ¨ÒÇ"
+  ],
   "engines": {
     "node": ">=8.10.0"
   },
-  "browser": "",
-  "es2015": "./dist/index.esm.js",
+  "browser": "./dist/kodak-scanner.esm.js",
+  "es2015": "./dist/kodak-scanner.esm.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bugs": {
-    "url": "https://github.com/waitingsong/npm-base/issues"
+    "url": "https://github.com/waitingsong/kodak-scanner/issues"
   },
-  "homepage": "https://github.com/waitingsong/npm-base#readme",
+  "homepage": "https://github.com/waitingsong/kodak-scanner#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/waitingsong/npm-base.git"
+    "url": "git+https://github.com/waitingsong/kodak-scanner.git"
   },
   "license": "MIT",
   "nyc": {
@@ -61,11 +69,15 @@
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
+    "rxjs": "^6.1.0",
     "source-map-support": "^0.5.4",
     "ts-node": "^5.0.1",
     "tslint": "^5.10.0",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.8.1"
+  },
+  "peerDependencies": {
+    "rxjs": "^6.1.0"
   },
   "scripts": {
     "bp:add": "git remote add bp https://github.com/waitingsong/npm-base",
