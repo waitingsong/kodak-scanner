@@ -1,7 +1,7 @@
 {
   "name": "kodak-scanner",
   "author": "waiting",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Kodak i3000 series scanner ECAMScript for mordern browser via client WebSocket Service",
   "keywords": [
     "Kodak",
@@ -9,8 +9,8 @@
     "i3000",
     "i3500",
     "rxjs",
-    "¿Â´ï",
-    "¸ßÉ¨ÒÇ"
+    "ï¿½Â´ï¿½",
+    "ï¿½ï¿½É¨ï¿½ï¿½"
   ],
   "engines": {
     "node": ">=8.10.0"
