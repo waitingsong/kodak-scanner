@@ -51,6 +51,7 @@ export class Scanner {
     this.subjectSub = this.innerSubscribe()
     this.wsSubject = null
     this.wsSub = null
+
   }
 
 
@@ -143,8 +144,13 @@ export class Scanner {
       )
   }
 
-  setScanOptions(options: Partial<ScanOpts>): Observable<void> {
-    const opts: Partial<ScanOpts> = options ? { ...initialScanOpts, ...options } : { ...initialScanOpts }
+  setScanOptions(options?: Partial<ScanOpts>): Observable<void> {
+    let opts: Partial<ScanOpts> = { ...this.scanOpts }
+
+    if (options) {
+      opts = options ? { ...initialScanOpts, ...options } : { ...initialScanOpts }
+      this.scanOpts = { ...opts }
+    }
     const arr = <Array<Observable<any>>> []
 
     for (const key of Object.keys(opts)) {
