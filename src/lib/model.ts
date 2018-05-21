@@ -2,10 +2,34 @@ export type MsgId = number
 // normal callback or resolve of Promise
 export type MsgQueueCb = (value: string | number) => void
 
+export interface ScanOpts {
+  brightness: number
+  color: ColorKind
+  dpi: number // 100, 150, 200, 240, 300, 400, 600, 1200
+  duplex: boolean
+  path: string  // save scan images
+}
+
+export const enum ScanOptsKeys {
+  setBrightness = 'brightness',
+  setColor = 'color',
+  setDPI = 'dpi',
+  setDuplex = 'duplex',
+  setScanPath = 'path',
+}
+
+export interface WsOpts {
+  host: string
+  ports: number[]
+  keepAliveInterval: number
+}
+
+export interface InitialWsOpts extends Partial<WsOpts> { }
+
+
 export interface SendArgs {
   [param: string]: string | number | void
 }
-
 
 export interface WsSendData extends SendArgs {
   fun: string
@@ -18,17 +42,6 @@ export interface WsRecvData {
   msg?: string
   dat?: any
 }
-
-
-export interface WsOpts {
-  host: string
-  ports: number[]
-  keepAliveInterval: number
-  scanPath: string
-}
-
-export interface InitialWsOpts extends Partial<WsOpts> { }
-
 
 export const enum Actions {
   exception = 'exception',
@@ -84,20 +97,4 @@ export enum ColorKind {
   blackwhite, // 0
   gray, // 1
   trueColor,  // 2
-}
-
-export interface ScanOpts {
-  brightness: number
-  color: ColorKind
-  dpi: number // 100, 150, 200, 240, 300, 400, 600, 1200
-  duplex: boolean
-  path: string  // save scan images
-}
-
-export const enum ScanOptsKeys {
-  setBrightness = 'brightness',
-  setColor = 'color',
-  setDPI = 'dpi',
-  setDuplex = 'duplex',
-  setScanPath = 'path',
 }

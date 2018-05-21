@@ -38,29 +38,21 @@ let globalMsgId: MsgId = 0
 
 export class Scanner {
   subject: Subject<WsEvent>
-  options: WsOpts
   private wsSubject: RxWebsocketSubject<WsRecvData> | null
   private wsSub: Subscription | null
   private keppAliveSub: Subscription | null
   private subjectSub: Subscription
   private reqMap: Map<MsgId, Observable<any>>
 
-  constructor(options?: InitialWsOpts) {
-    this.options = this.parseOptions(options)
-    this.wsSubject = null
-    this.wsSub = null
+  constructor(public options: WsOpts, public scanOpts: Partial<ScanOpts>) {
     this.keppAliveSub = null
+    this.reqMap = new Map()
     this.subject = new Subject()
     this.subjectSub = this.innerSubscribe()
-    this.reqMap = new Map()
+    this.wsSubject = null
+    this.wsSub = null
   }
 
-
-  parseOptions(options?: InitialWsOpts) {
-    const opts = <WsOpts> options ? { ...initialWsOpts, ...options } : { ...initialWsOpts }
-
-    return opts
-  }
 
   connect() {
     this.disconnect()
@@ -107,7 +99,7 @@ export class Scanner {
 
   setScanPath(path: string) {
     return this.sendMsg<void>(SrvMethod.setScanPath, {
-      path: path ? path : this.options.scanPath,
+      path: path ? path : this.scanOpts.path,
     })
 
   }
@@ -203,7 +195,7 @@ export class Scanner {
 
   getFileList(path: string): Observable<string[]> {
     return this.sendMsg<string[]>(SrvMethod.getFileList, {
-      path: path ? path : this.options.scanPath,
+      path: path ? path : this.scanOpts.path,
     })
   }
 
@@ -405,6 +397,16 @@ export class Scanner {
 } // END of class
 
 
-export function init(options?: InitialWsOpts): Scanner {
-  return new Scanner(options)
+export function init(options?: InitialWsOpts, scanOptions?: Partial<ScanOpts>): Scanner {
+  const opts = parseOptions(options)
+  const scanOpts = scanOptions ? { ...initialScanOpts, ...scanOptions } : { ...initialScanOpts }
+
+  return new Scanner(opts, scanOpts)
+}
+
+
+function parseOptions(options?: InitialWsOpts) {
+  const opts = <WsOpts> options ? { ...initialWsOpts, ...options } : { ...initialWsOpts }
+
+  return opts
 }
