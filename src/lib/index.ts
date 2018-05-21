@@ -1,6 +1,7 @@
-import { forkJoin, interval, of, Observable, Subject, Subscription } from 'rxjs'
+import { interval, of, Observable, Subject, Subscription } from 'rxjs'
 import {
   catchError,
+  combineAll,
   concatMap,
   filter,
   map,
@@ -184,13 +185,12 @@ export class Scanner {
 
     const combined$ = of(...arr)
       .pipe(
-        concatMap(ret => ret),
-      )
-
-    return forkJoin(combined$)
-      .pipe(
+        concatMap(ret => of(ret)),
+        combineAll(),
         mapTo(void 0),
       )
+
+    return combined$
   }
 
 
