@@ -18,7 +18,7 @@ function subscribeEvent(scanner) {
 
 function scan() {
   const { of } = rxjs
-  const { skipWhile, delay, concat, concatMap, catchError, switchMap } = rxjs.operators
+  const { timeout, skipWhile, concatMap, catchError } = rxjs.operators
 
   // scanner.isReadyScan().subscribe(flag => {
   //   console.log('scan ready?', flag)
@@ -32,17 +32,15 @@ function scan() {
    const stream$ = scanner.setScanOptions(opts)
     .pipe(
       concatMap(() => scanner.scan()),
-      concatMap(() => {
-        return scanner.getFileList()
-      }),
-      catchError(err => {
-        console.error(err)
-        return of([])
-      }),
+      concatMap(() => scanner.getFileList()),
+      timeout(120 * 1000),  // 120s
   )
 
-  stream$.subscribe(fileList => {
-    console.info('fileList:', fileList)
-  })
+  stream$.subscribe(
+    fileList => {
+      console.info('fileList:', fileList)
+    },
+    err => console.error('got error:', err),
+  )
 
 }
