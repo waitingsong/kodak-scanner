@@ -386,10 +386,15 @@ export class Scanner {
   private keppAlive() {
     if (this.wsSubject && this.wsSub && ! this.wsSub.closed) {
       // this.wsSubject.subscribe()
-      const intv = this.options.keepAliveInterval
+      const intvValue = this.options.keepAliveInterval
 
-      if (intv > 0) {
-        this.keppAliveSub = interval(intv).subscribe()
+      if (intvValue > 0) {
+        this.keppAliveSub = interval(intvValue)
+          .pipe(
+            take(1000),
+            switchMap(() => this.isReadyScan()),
+        )
+          .subscribe()
       }
     }
   }
