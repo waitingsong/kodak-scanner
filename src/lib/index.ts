@@ -44,14 +44,13 @@ export class Scanner {
   private subjectSub: Subscription
   private reqMap: Map<MsgId, Observable<any>>
 
-  constructor(public options: WsOpts, public scanOpts: Partial<ScanOpts>) {
+  constructor(public scanOpts: Partial<ScanOpts>, public options: WsOpts) {
     this.keppAliveSub = null
     this.reqMap = new Map()
     this.subject = new Subject()
     this.subjectSub = this.innerSubscribe()
     this.wsSubject = null
     this.wsSub = null
-
   }
 
 
@@ -75,7 +74,11 @@ export class Scanner {
       }),
     )
 
-    this.wsSubject && this.keppAlive()
+    if (this.wsSubject) {
+      this.setScanOptions()
+        .pipe(tap(() => this.keppAlive()))
+        .subscribe()
+    }
   }
 
 
@@ -408,11 +411,11 @@ export class Scanner {
 } // END of class
 
 
-export function init(options?: InitialWsOpts, scanOptions?: Partial<ScanOpts>): Scanner {
-  const opts = parseOptions(options)
+export function init(scanOptions?: Partial<ScanOpts>, wsOptions?: InitialWsOpts): Scanner {
+  const wsOpts = parseOptions(wsOptions)
   const scanOpts = scanOptions ? { ...initialScanOpts, ...scanOptions } : { ...initialScanOpts }
 
-  return new Scanner(opts, scanOpts)
+  return new Scanner(scanOpts, wsOpts)
 }
 
 

@@ -1,6 +1,14 @@
 /* eslint-disable */
 
 function initScanner(init) {
+  // default options
+  // const scanOpts = {
+  //   color: 2,
+  //   duplex: false,
+  //   dpi: 200,
+  //   path: 'c:/kodak-scan-tmp',
+  // }
+  // const scanner = init(scanOpts)
   const scanner = init()
 
   subscribeEvent(scanner)
@@ -16,7 +24,32 @@ function subscribeEvent(scanner) {
 }
 
 
-function scan() {
+function scan(btn) {
+  const { of } = rxjs
+  const { catchError, concatMap, skipWhile, timeout, tap } = rxjs.operators
+
+  btn.disabled = true
+  const stream$ = scanner.scan()
+    .pipe(
+      concatMap(() => scanner.getFileList()),
+      timeout(120 * 1000),  // 120s
+    )
+
+  stream$.subscribe(
+    fileList => {
+      console.info('fileList:', fileList)
+    },
+    err => {
+      btn.disabled = false
+      console.error('got error:', err)
+    },
+    complete => {
+      btn.disabled = false
+    },
+  )
+}
+
+function scan2(btn) {
   const { of } = rxjs
   const { timeout, skipWhile, concatMap, catchError } = rxjs.operators
 
@@ -24,23 +57,30 @@ function scan() {
   //   console.log('scan ready?', flag)
   // })
 
+  btn.disabled = true
   const opts = {
     color: 2,
     duplex: false,
-    dpi: 200,
+    dpi: 150,
   }
-   const stream$ = scanner.setScanOptions(opts)
+  const stream$ = scanner.setScanOptions(opts)
     .pipe(
       concatMap(() => scanner.scan()),
       concatMap(() => scanner.getFileList()),
       timeout(120 * 1000),  // 120s
-  )
+    )
 
   stream$.subscribe(
     fileList => {
       console.info('fileList:', fileList)
     },
-    err => console.error('got error:', err),
+    err => {
+      btn.disabled = false
+      console.error('got error:', err)
+    },
+    complete => {
+      btn.disabled = false
+    },
   )
 
 }
