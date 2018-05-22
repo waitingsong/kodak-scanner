@@ -31,7 +31,6 @@ function scan(btn) {
   btn.disabled = true
   const stream$ = scanner.scan()
     .pipe(
-      concatMap(() => scanner.getFileList()),
       timeout(120 * 1000),  // 120s
     )
 
@@ -66,7 +65,6 @@ function scan2(btn) {
   const stream$ = scanner.setScanOptions(opts)
     .pipe(
       concatMap(() => scanner.scan()),
-      concatMap(() => scanner.getFileList()),
       timeout(120 * 1000),  // 120s
     )
 

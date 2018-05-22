@@ -134,7 +134,7 @@ export class Scanner {
   }
 
 
-  scan() {
+  scan(): Observable<string[]> {
     const scan$ = this.sendMsg<void>(SrvMethod.scan, {
       scanmodel: 0,
       position: 0,
@@ -144,6 +144,7 @@ export class Scanner {
       .pipe(
         switchMap(() => scan$),
         switchMap(() => this.waitScannerReady(300, 3000)),  // suspect every batch scan maximum duration 5min
+        concatMap(() => this.getFileList()),
       )
   }
 
@@ -202,7 +203,7 @@ export class Scanner {
       )
   }
 
-  getFileList(path: string): Observable<string[]> {
+  getFileList(path?: string): Observable<string[]> {
     return this.sendMsg<string[]>(SrvMethod.getFileList, {
       path: path ? path : this.scanOpts.path,
     })
