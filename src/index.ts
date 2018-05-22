@@ -1,3 +1,3 @@
-import { init } from './lib/index'
-
-export { init }
+export { init } from './lib/index'
+export { initialScanOpts, initialWsOpts } from './lib/config'
+export * from './lib/model'
