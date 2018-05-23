@@ -70,7 +70,7 @@ export interface WsEvent {
 
 // ws服务端调用方法
 export const enum SrvMethod {
-  clearAll = 'allclear',  // remove all images and index file
+  clearAll = 'Allclear',  // remove all images and index file
   getFileList = 'Filelist',  // fetch image files list
   imgToBase64 = 'ImgToBase64String',
   removeImg = 'remove',  // remove one image

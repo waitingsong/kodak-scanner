@@ -209,8 +209,10 @@ export class Scanner {
     })
   }
 
-  clearAll() {
-    return this.sendMsg<void>(SrvMethod.clearAll)
+  clearAll(path?: string) {
+    return this.sendMsg<void>(SrvMethod.clearAll, {
+      path: path ? path : this.scanOpts.path,
+    })
   }
 
   setDuplex(duplex: boolean) {
