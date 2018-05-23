@@ -54,31 +54,39 @@ export class Scanner {
   }
 
 
-  connect() {
+  connect(): Observable<null> {
     this.disconnect()
     this.wsSubject = new RxWebsocketSubject(`${this.options.host}:${this.options.ports[0]}`)
-    this.subject.next({ ...initialWsEvent, action: Actions.wsConnected })
 
-    this.wsSub = this.wsSubject.subscribe(
-      data => this.handleMsgEventData(data),
+    return this.wsSubject.connectionStatus.pipe(
+      filter(connected => connected),
+      take(1),
+      mapTo(null),
+      tap(() => {
+        this.subject.next({ ...initialWsEvent, action: Actions.wsConnected })
 
-      data => this.subject.next({
-        ...initialWsEvent,
-        action: Actions.wsClosedException,
-        payload: data,
-      }),
+        this.wsSub = (<RxWebsocketSubject<WsRecvData>> this.wsSubject).subscribe(
+          data => this.handleMsgEventData(data),
 
-      () => this.subject.next({
-        ...initialWsEvent,
-        action: Actions.wsClosed,
+          data => this.subject.next({
+            ...initialWsEvent,
+            action: Actions.wsClosedException,
+            payload: data,
+          }),
+
+          () => this.subject.next({
+            ...initialWsEvent,
+            action: Actions.wsClosed,
+          }),
+        )
+
+        if (this.wsSubject) {
+          this.setScanOptions()
+            .pipe(tap(() => this.keppAlive()))
+            .subscribe()
+        }
       }),
     )
-
-    if (this.wsSubject) {
-      this.setScanOptions()
-        .pipe(tap(() => this.keppAlive()))
-        .subscribe()
-    }
   }
 
 

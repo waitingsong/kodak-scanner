@@ -12,7 +12,11 @@ function initScanner(init) {
   const scanner = init()
 
   subscribeEvent(scanner)
-  scanner.connect()
+  scanner.connect().subscribe(
+    connected => console.log('connected'),
+    err => console.log('connect fail'),
+    complete => console.log('connect fail timeout'),
+  )
   window.scanner = scanner
 }
 
