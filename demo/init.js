@@ -15,7 +15,7 @@ function initScanner(init) {
   scanner.connect().subscribe(
     connected => console.log('connected'),
     err => console.log('connect fail'),
-    complete => console.log('connect fail timeout'),
+    () => console.log('connected or connect fail timeout'),
   )
   window.scanner = scanner
 }
