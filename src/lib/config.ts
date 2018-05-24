@@ -2,7 +2,7 @@ import { Actions, ColorKind, ScanOpts, WsEvent, WsOpts } from './model'
 
 export const initialScanOpts: Partial<ScanOpts> = {
   color: ColorKind.trueColor,
-  dpi:   200, // 100, 150, 200, 240, 300, 400, 600, 1200
+  dpi:   300, // 100, 150, 200, 240, 300, 400, 600, 1200
   duplex:   false,
   path:   'c:/kodak-scan-tmp',
 }
