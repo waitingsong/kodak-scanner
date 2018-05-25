@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 function initScanner(init) {
-  // default options
+  // // default options
   // const scanOpts = {
   //   color: 2,
   //   duplex: false,
-  //   dpi: 200,
+  //   dpi: 300,
   //   path: 'c:/kodak-scan-tmp',
   // }
   // const scanner = init(scanOpts)
@@ -31,7 +31,9 @@ function subscribeEvent(scanner) {
 function scan(btn) {
   const { of } = rxjs
   const { catchError, concatMap, skipWhile, timeout, tap } = rxjs.operators
+  const last = new Date()
 
+  
   btn.disabled = true
   const stream$ = scanner.scan()
     .pipe(
@@ -40,7 +42,8 @@ function scan(btn) {
 
   stream$.subscribe(
     fileList => {
-      console.info('fileList:', fileList)
+      const cost = (new Date() - last) / 1000
+      console.info(`cost: ${cost}s fileList:`, fileList)
     },
     err => {
       btn.disabled = false
