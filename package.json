@@ -9,8 +9,8 @@
     "i3000",
     "i3500",
     "rxjs",
-    "æŸ¯è¾¾",
-    "é«˜æ‰«ä»ª"
+    "¿Â´ï",
+    "¸ßÉ¨ÒÇ"
   ],
   "engines": {
     "node": ">=8.10.0"
@@ -69,9 +69,9 @@
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
-    "rxjs": "^6.1.0",
+    "rxjs": "^6.2.0",
     "source-map-support": "^0.5.4",
-    "ts-node": "^5.0.1",
+    "ts-node": "^6.0.5",
     "tslint": "^5.10.0",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.8.1"
